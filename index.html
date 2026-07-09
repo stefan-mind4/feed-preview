@@ -241,6 +241,7 @@
         $(b).classList.toggle('on', b === btn);
         $(v).hidden = (v !== view);
       }
+      if (view === 'vIg') igSync();
     };
   }
   // Pfeile
@@ -257,7 +258,8 @@
   // IG: Zähler, Dots, CTA-Link, Slide-Klick
   const igTrack = $('igTrack'), slides = [...igTrack.children], dots = [...document.querySelectorAll('.dot')];
   function igSync() {
-    const i = Math.min(Math.round(igTrack.scrollLeft / igTrack.offsetWidth), slides.length - 1);
+    const w = igTrack.offsetWidth;
+    const i = w ? Math.min(Math.round(igTrack.scrollLeft / w), slides.length - 1) : 0;
     $('igCount').textContent = (i + 1) + '/' + slides.length;
     dots.forEach((d, k) => d.classList.toggle('on', k === i));
     $('igCta').href = slides[i].dataset.href;
