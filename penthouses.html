@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carousel Ad Vorschau – Quartier Starhemberg Penthouses</title>
+<style>
+  :root { --fb-bg:#f0f2f5; --fb-txt:#050505; --fb-sub:#65676b; --fb-div:#ced0d4; --blue:#0064e0; }
+  * { box-sizing:border-box; margin:0; }
+  body { background:var(--fb-bg); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; padding:24px 8px 60px; }
+  .wrap { max-width:680px; margin:0 auto; }
+  h1 { font-size:15px; color:var(--fb-sub); font-weight:600; text-align:center; margin-bottom:14px; }
+  .toggle { display:flex; justify-content:center; gap:8px; margin-bottom:18px; }
+  .toggle button { border:1px solid var(--fb-div); background:#fff; padding:8px 22px; border-radius:20px; font-size:14px; font-weight:600; color:var(--fb-sub); cursor:pointer; }
+  .toggle button.on { background:#e7f0fd; color:var(--blue); border-color:var(--blue); }
+
+  /* ---------- FACEBOOK ---------- */
+  .fb { max-width:500px; margin:0 auto; background:#fff; border-radius:8px; box-shadow:0 1px 2px rgba(0,0,0,.2); overflow:hidden; }
+  .fb-head { display:flex; align-items:center; gap:8px; padding:12px 16px 0; }
+  .av { width:40px; height:40px; border-radius:50%; border:1px solid #eee; }
+  .fb-name { font-size:15px; font-weight:600; color:var(--fb-txt); }
+  .fb-sub { font-size:13px; color:var(--fb-sub); }
+  .dots3 { margin-left:auto; color:var(--fb-sub); font-size:20px; letter-spacing:1px; cursor:pointer; }
+  .fb-text { padding:8px 16px 10px; font-size:15px; line-height:1.35; color:var(--fb-txt); }
+  .more { color:var(--fb-sub); font-weight:600; cursor:pointer; }
+  .car { position:relative; }
+  .track { display:flex; gap:6px; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; padding:0 16px; }
+  .track::-webkit-scrollbar { display:none; }
+  .card { flex:0 0 300px; scroll-snap-align:start; border:1px solid var(--fb-div); border-radius:8px; overflow:hidden; text-decoration:none; background:#fff; }
+  .card img { width:100%; height:300px; object-fit:cover; display:block; }
+  .meta { display:flex; align-items:center; gap:8px; padding:10px 12px; background:#f7f8fa; min-height:76px; }
+  .mtxt { flex:1; min-width:0; }
+  .dom { font-size:11px; color:var(--fb-sub); letter-spacing:.2px; }
+  .hl { font-size:14.5px; font-weight:600; color:var(--fb-txt); }
+  .ds { font-size:13px; color:var(--fb-sub); }
+  .nav { position:absolute; top:140px; width:44px; height:44px; border-radius:50%; background:#fff; border:1px solid var(--fb-div); box-shadow:0 2px 6px rgba(0,0,0,.25); font-size:18px; color:#333; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:2; }
+  .nav.prev { left:6px; } .nav.next { right:6px; }
+  .fb-stats { display:flex; justify-content:space-between; padding:10px 16px; font-size:14px; color:var(--fb-sub); }
+  .fb-actions { display:flex; border-top:1px solid var(--fb-div); margin:0 16px; padding:4px 0; }
+  .fb-actions span { flex:1; text-align:center; padding:8px 0; font-size:14.5px; font-weight:600; color:var(--fb-sub); border-radius:4px; cursor:pointer; }
+  .fb-actions span:hover { background:#f2f2f2; }
+
+  /* ---------- INSTAGRAM ---------- */
+  .ig { max-width:400px; margin:0 auto; background:#fff; border:1px solid #dbdbdb; border-radius:8px; overflow:hidden; font-size:14px; }
+  .ig-head { display:flex; align-items:center; gap:10px; padding:10px 12px; }
+  .ig-head .av { width:32px; height:32px; }
+  .ig-name { font-weight:600; color:#262626; font-size:13.5px; }
+  .ig-sp { font-size:12px; color:#737373; }
+  .ig-car { position:relative; }
+  .ig-track { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; }
+  .ig-track::-webkit-scrollbar { display:none; }
+  .slide { flex:0 0 100%; scroll-snap-align:start; cursor:pointer; }
+  .slide img { width:100%; display:block; aspect-ratio:1/1; object-fit:cover; }
+  .count { position:absolute; top:12px; right:12px; background:rgba(0,0,0,.65); color:#fff; font-size:12px; padding:4px 9px; border-radius:12px; }
+  .ig .nav { top:calc(50% - 22px); width:30px; height:30px; font-size:13px; }
+  .cta { display:flex; justify-content:space-between; align-items:center; padding:12px 14px; background:var(--blue); color:#fff; font-weight:600; font-size:14px; text-decoration:none; }
+  .ig-cardinfo { padding:10px 14px; background:#fafafa; border-bottom:1px solid #efefef; }
+  .ig-cardinfo .hl { font-size:14px; }
+  .ig-cardinfo .ds { font-size:12.5px; }
+  .ig-icons { display:flex; gap:14px; padding:10px 12px 6px; align-items:center; }
+  .ig-icons svg { width:24px; height:24px; stroke:#262626; fill:none; stroke-width:1.8; cursor:pointer; }
+  .ig-icons .bm { margin-left:auto; }
+  .dotsrow { text-align:center; margin-top:-30px; margin-bottom:6px; position:relative; z-index:2; }
+  .dot { display:inline-block; width:6px; height:6px; border-radius:50%; background:#c7c7c7; margin:0 2px; }
+  .dot.on { background:var(--blue); }
+  .likes { padding:0 12px 4px; font-weight:600; color:#262626; font-size:13.5px; }
+  .cap { padding:0 12px 14px; color:#262626; line-height:1.4; font-size:13.5px; }
+  .cap b { font-weight:600; }
+  .note { max-width:500px; margin:18px auto 0; font-size:12.5px; color:var(--fb-sub); text-align:center; line-height:1.5; }
+  [hidden] { display:none !important; }
+</style></head>
+<body>
+<div class="wrap">
+  <h1>Vorschau: Carousel Ad – Quartier Starhemberg Penthouses</h1>
+  <div class="toggle">
+    <button id="tFb" class="on">Facebook Feed</button>
+    <button id="tIg">Instagram Feed</button>
+  </div>
+
+  <div class="fb" id="vFb">
+    <div class="fb-head">
+      <img class="av" src="img_ph/avatar.webp" alt="">
+      <div>
+        <div class="fb-name">Wiener Immobilien Real Estate</div>
+        <div class="fb-sub">Gesponsert · 🌐</div>
+      </div>
+      <div class="dots3">···</div>
+    </div>
+    <div class="fb-text">Penthouse & Garten-Loft in der ehemaligen Hutfabrik – jetzt bezugsbereit. 🏭<span id="rest" hidden><br>Historischer Fabrikcharme trifft modernen Wohnkomfort: bis zu 74 m² Dachterrasse, klimatisiert, Lift direkt von der Tiefgarage in die Wohnung, absolute Ruhelage mit unverbaubarem Grünblick – mitten im 4. Bezirk, 1 Min. zur U1.<br>👉 Nur noch 2 Wohnungen verfügbar (100 & 144 m²).</span>
+      <span class="more" id="moreBtn">… Mehr ansehen</span>
+    </div>
+    <div class="car">
+      <button class="nav prev" data-t="fbTrack" data-d="-1">&#10094;</button>
+      <div class="track" id="fbTrack">
+    <a class="card" href="https://quartier-starhemberg.at/wohnungen/" target="_blank">
+      <img src="img_ph/card01.webp" alt="">
+      <div class="meta">
+        <div class="mtxt">
+          <div class="dom">QUARTIER-STARHEMBERG.AT</div>
+          <div class="hl">Penthouse-Loft in der alten Hutfabrik</div>
+          <div class="ds">Jetzt bezugsbereit, 4. Bezirk</div>
+        </div>
+      </div>
+    </a>
+    <a class="card" href="https://quartier-starhemberg.at/wohnungen/" target="_blank">
+      <img src="img_ph/card02.webp" alt="">
+      <div class="meta">
+        <div class="mtxt">
+          <div class="dom">QUARTIER-STARHEMBERG.AT</div>
+          <div class="hl">Dachterrasse über den Dächern Wiens</div>
+          <div class="ds">74 m² Freifläche mit Grünblick</div>
+        </div>
+      </div>
+    </a>
+    <a class="card" href="https://quartier-starhemberg.at/wohnungen/" target="_blank">
+      <img src="img_ph/card03.webp" loading="lazy" alt="">
+      <div class="meta">
+        <div class="mtxt">
+          <div class="dom">QUARTIER-STARHEMBERG.AT</div>
+          <div class="hl">Über zwei Ebenen zur Dachterrasse</div>
+          <div class="ds">Skulpturale Designtreppe</div>
+        </div>
+      </div>
+    </a>
+    <a class="card" href="https://quartier-starhemberg.at/wohnungen/" target="_blank">
+      <img src="img_ph/card04.webp" loading="lazy" alt="">
+      <div class="meta">
+        <div class="mtxt">
+          <div class="dom">QUARTIER-STARHEMBERG.AT</div>
+          <div class="hl">Garten-Loft mit 69 m² Freifläche</div>
+          <div class="ds">Loft-Feeling im Grünen</div>
+        </div>
+      </div>
+    </a>
+    <a class="card" href="https://quartier-starhemberg.at/wohnungen/" target="_blank">
+      <img src="img_ph/card05.webp" loading="lazy" alt="">
+      <div class="meta">
+        <div class="mtxt">
+          <div class="dom">QUARTIER-STARHEMBERG.AT</div>
+          <div class="hl">Mit dem Lift direkt in die Wohnung</div>
+          <div class="ds">Gut beleuchtete, großflächige Tiefgarage</div>
+        </div>
+      </div>
+    </a>
+    <a class="card" href="https://quartier-starhemberg.at/wohnungen/" target="_blank">
+      <img src="img_ph/card06.webp" loading="lazy" alt="">
+      <div class="meta">
+        <div class="mtxt">
+          <div class="dom">QUARTIER-STARHEMBERG.AT</div>
+          <div class="hl">Design-Bäder mit Tageslicht</div>
+          <div class="ds">Wanne + Regendusche</div>
+        </div>
+      </div>
+    </a>
+    <a class="card" href="https://quartier-starhemberg.at/graf-starhemberg-gasse-31#hutfabrikstiege2" target="_blank">
+      <img src="img_ph/card07.webp" loading="lazy" alt="">
+      <div class="meta">
+        <div class="mtxt">
+          <div class="dom">QUARTIER-STARHEMBERG.AT</div>
+          <div class="hl">TOP 402 · 100 m² · 2 Zimmer</div>
+          <div class="ds">EG, 69 m² Freifläche</div>
+        </div>
+      </div>
+    </a>
+    <a class="card" href="https://quartier-starhemberg.at/graf-starhemberg-gasse-31#hutfabrikstiege2" target="_blank">
+      <img src="img_ph/card08.webp" loading="lazy" alt="">
+      <div class="meta">
+        <div class="mtxt">
+          <div class="dom">QUARTIER-STARHEMBERG.AT</div>
+          <div class="hl">TOP 407 · 144 m² · 3 Zimmer</div>
+          <div class="ds">4. OG, 74 m² Dachterrasse</div>
+        </div>
+      </div>
+    </a>
+    <a class="card" href="https://quartier-starhemberg.at/wohnungen/" target="_blank">
+      <img src="img_ph/card09.webp" loading="lazy" alt="">
+      <div class="meta">
+        <div class="mtxt">
+          <div class="dom">QUARTIER-STARHEMBERG.AT</div>
+          <div class="hl">Jetzt Besichtigung vereinbaren</div>
+          <div class="ds">Musterwohnung verfügbar</div>
+        </div>
+      </div>
+    </a></div>
+      <button class="nav next" data-t="fbTrack" data-d="1">&#10095;</button>
+    </div>
+    <div class="fb-stats"><span>👍❤️ 87</span><span>12 Kommentare · 5 Mal geteilt</span></div>
+    <div class="fb-actions"><span>👍 Gefällt mir</span><span>💬 Kommentieren</span><span>↪ Teilen</span></div>
+  </div>
+
+  <div class="ig" id="vIg" hidden>
+    <div class="ig-head">
+      <img class="av" src="img_ph/avatar.webp" alt="">
+      <div>
+        <div class="ig-name">wienerimmobilien</div>
+        <div class="ig-sp">Gesponsert</div>
+      </div>
+      <div class="dots3">···</div>
+    </div>
+    <div class="ig-car">
+      <button class="nav prev" data-t="igTrack" data-d="-1">&#10094;</button>
+      <div class="ig-track" id="igTrack"><div class="slide" data-href="https://quartier-starhemberg.at/wohnungen/" data-head="Penthouse-Loft in der alten Hutfabrik" data-desc="Jetzt bezugsbereit, 4. Bezirk"><img src="img_ph/card01.webp" alt=""></div><div class="slide" data-href="https://quartier-starhemberg.at/wohnungen/" data-head="Dachterrasse über den Dächern Wiens" data-desc="74 m² Freifläche mit Grünblick"><img src="img_ph/card02.webp" alt=""></div><div class="slide" data-href="https://quartier-starhemberg.at/wohnungen/" data-head="Über zwei Ebenen zur Dachterrasse" data-desc="Skulpturale Designtreppe"><img src="img_ph/card03.webp" loading="lazy" alt=""></div><div class="slide" data-href="https://quartier-starhemberg.at/wohnungen/" data-head="Garten-Loft mit 69 m² Freifläche" data-desc="Loft-Feeling im Grünen"><img src="img_ph/card04.webp" loading="lazy" alt=""></div><div class="slide" data-href="https://quartier-starhemberg.at/wohnungen/" data-head="Mit dem Lift direkt in die Wohnung" data-desc="Gut beleuchtete, großflächige Tiefgarage"><img src="img_ph/card05.webp" loading="lazy" alt=""></div><div class="slide" data-href="https://quartier-starhemberg.at/wohnungen/" data-head="Design-Bäder mit Tageslicht" data-desc="Wanne + Regendusche"><img src="img_ph/card06.webp" loading="lazy" alt=""></div><div class="slide" data-href="https://quartier-starhemberg.at/graf-starhemberg-gasse-31#hutfabrikstiege2" data-head="TOP 402 · 100 m² · 2 Zimmer" data-desc="EG, 69 m² Freifläche"><img src="img_ph/card07.webp" loading="lazy" alt=""></div><div class="slide" data-href="https://quartier-starhemberg.at/graf-starhemberg-gasse-31#hutfabrikstiege2" data-head="TOP 407 · 144 m² · 3 Zimmer" data-desc="4. OG, 74 m² Dachterrasse"><img src="img_ph/card08.webp" loading="lazy" alt=""></div><div class="slide" data-href="https://quartier-starhemberg.at/wohnungen/" data-head="Jetzt Besichtigung vereinbaren" data-desc="Musterwohnung verfügbar"><img src="img_ph/card09.webp" loading="lazy" alt=""></div></div>
+      <button class="nav next" data-t="igTrack" data-d="1">&#10095;</button>
+      <div class="count" id="igCount">1/10</div>
+    </div>
+    <div class="ig-cardinfo">
+      <div class="dom">QUARTIER-STARHEMBERG.AT</div>
+      <div class="hl" id="igHead"></div>
+      <div class="ds" id="igDesc"></div>
+    </div>
+    <a class="cta" id="igCta" href="https://quartier-starhemberg.at/wohnungen/" target="_blank"><span>Termin vereinbaren</span><span>›</span></a>
+    <div class="ig-icons">
+      <svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.7-9.7-9C.8 8.6 2.6 5 6 5c2.2 0 3.5 1.2 4.3 2.4L12 9l1.7-1.6C14.5 6.2 15.8 5 18 5c3.4 0 5.2 3.6 3.7 7-2.2 4.3-9.7 9-9.7 9z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M21 11.5c0 4.1-4 7.5-9 7.5-1 0-2-.1-2.9-.4L4 20l1.3-3.1C3.9 15.6 3 13.6 3 11.5 3 7.4 7 4 12 4s9 3.4 9 7.5z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M22 3 2 11l7 2 2 7 4-5 5 2z"/></svg>
+      <svg class="bm" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg>
+    </div>
+    <div class="dotsrow" style="margin:0 0 4px"><span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    <div class="likes">Gefällt 214 Mal</div>
+    <div class="cap"><b>wienerimmobilien</b> Penthouse & Garten-Loft in der ehemaligen Hutfabrik – jetzt bezugsbereit. 🏭<span class="more" id="igMoreBtn"> … mehr</span><span id="igRest" hidden><br>Historischer Fabrikcharme trifft modernen Wohnkomfort: bis zu 74 m² Dachterrasse, klimatisiert, Lift direkt von der Tiefgarage in die Wohnung, absolute Ruhelage mit unverbaubarem Grünblick – mitten im 4. Bezirk, 1 Min. zur U1.<br>👉 Nur noch 2 Wohnungen verfügbar (100 & 144 m²).</span></div>
+  </div>
+
+  <div class="note">Klickbare Vorschau (Karten öffnen die Ziel-Links) · Pfeile oder Wischen zum Blättern.<br>
+  Karten 1–6 &amp; 9 → /wohnungen/ · Karten 7–8 → Hutfabrik Stiege IV</div>
+</div>
+<script>
+  const $ = id => document.getElementById(id);
+  // Toggle FB / IG
+  const views = { tFb: 'vFb', tIg: 'vIg' };
+  for (const [btn, view] of Object.entries(views)) {
+    $(btn).onclick = () => {
+      for (const [b, v] of Object.entries(views)) {
+        $(b).classList.toggle('on', b === btn);
+        $(v).hidden = (v !== view);
+      }
+      if (view === 'vIg') igSync();
+    };
+  }
+  // Pfeile
+  document.querySelectorAll('.nav').forEach(n => {
+    n.onclick = () => {
+      const tr = $(n.dataset.t);
+      const w = tr.firstElementChild ? tr.querySelector('.card, .slide').offsetWidth + 6 : 300;
+      tr.scrollBy({ left: n.dataset.d * w, behavior: 'smooth' });
+    };
+  });
+  // Mehr ansehen
+  $('moreBtn').onclick = () => { $('rest').hidden = false; $('moreBtn').hidden = true; };
+  $('igMoreBtn').onclick = () => { $('igRest').hidden = false; $('igMoreBtn').hidden = true; };
+  // IG: Zähler, Dots, CTA-Link, Slide-Klick
+  const igTrack = $('igTrack'), slides = [...igTrack.children], dots = [...document.querySelectorAll('.dot')];
+  function igSync() {
+    const w = igTrack.offsetWidth;
+    const i = w ? Math.min(Math.round(igTrack.scrollLeft / w), slides.length - 1) : 0;
+    $('igCount').textContent = (i + 1) + '/' + slides.length;
+    dots.forEach((d, k) => d.classList.toggle('on', k === i));
+    $('igCta').href = slides[i].dataset.href;
+    $('igHead').textContent = slides[i].dataset.head;
+    $('igDesc').textContent = slides[i].dataset.desc;
+  }
+  igTrack.addEventListener('scroll', () => requestAnimationFrame(igSync));
+  igSync();
+  slides.forEach(s => s.onclick = () => window.open(s.dataset.href, '_blank'));
+</script>
+</body></html>
